@@ -97,9 +97,29 @@ define(['jquery', 'app/util', 'app/bib'], function ($, util, bib) {
 
         readQueryFromUrl: function () {
             var query = util.getUrlParameter('q');
-            if (query) {
-                toggleSelector('search', query);
+            var type = util.getUrlParameter('type') || 'keywords';
+
+            if (!query) {
+                return;
             }
+
+            // Decode URL and split multiple selectors by |
+            query = decodeURIComponent(query.replace(/\+/g, ' '));
+            var queryList = query.split('|');
+
+            this.selectors = {};
+
+            for (var i = 0; i < queryList.length && i < this.nSelectors; i++) {
+                this.selectors[i] = {
+                    type: type,
+                    text: queryList[i],
+                    inverted: false,
+                    lock: false,
+                    count: 0
+                };
+            }
+
+            window.updateShowPart();
         },
 
         getNActiveSelectors: function () {

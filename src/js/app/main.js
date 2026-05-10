@@ -87,8 +87,15 @@ define(function (require) {
 
     $(document).ready(function () {
         require('app/init_page').init();
+        
         window.update(true);
         selectors.readQueryFromUrl();
+        
+        requestAnimationFrame(function () {
+            requestAnimationFrame(function () {
+                window.updateShowPart();
+            });
+        });
     });
 
 });
