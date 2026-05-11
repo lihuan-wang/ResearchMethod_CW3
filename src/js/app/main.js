@@ -88,14 +88,25 @@ define(function (require) {
     $(document).ready(function () {
         require('app/init_page').init();
         
+
+        // Watch selector area size changes and adjust header automatically
+        if (window.ResizeObserver) {
+            var selectorContainer = document.getElementById('selectors_container');
+
+            if (selectorContainer) {
+                var resizeObserver = new ResizeObserver(function () {
+                    if (window.adaptHeaderSize) {
+                        window.adaptHeaderSize();
+                    }
+                });
+
+                resizeObserver.observe(selectorContainer);
+            }
+        }
+
         window.update(true);
         selectors.readQueryFromUrl();
-        
-        requestAnimationFrame(function () {
-            requestAnimationFrame(function () {
-                window.updateShowPart();
-            });
-        });
     });
+
 
 });
